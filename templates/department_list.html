@@ -1,0 +1,3 @@
+{% extends 'list_base.html' %}
+{% block columns %}<th>№</th><th>Код</th><th>Название факультета</th>{% endblock %}
+{% block cells %}<td class="text-secondary">{{ object.pk }}</td><td><span class="badge bg-teal-lt">{{ object.code }}</span></td><td>{{ object.title }}</td>{% endblock %}

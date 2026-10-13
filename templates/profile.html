@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Профиль · Учебный портал{% endblock %}
+{% block content %}
+<div class="page-header mb-4"><div class="page-pretitle">Личный кабинет</div><h1 class="page-title">Профиль пользователя</h1></div>
+<div class="card profile-card">
+  <div class="card-header profile-head">
+    <span class="avatar avatar-xl rounded-circle bg-green-lt">{{ user.username|first|upper }}</span>
+    <div><h2 class="card-title">{{ user.get_full_name|default:user.username }}</h2><div class="text-secondary mt-1">{{ user.username }}</div></div>
+    <span class="badge ms-auto {% if details.role == 'student' %}bg-green-lt{% elif details.role == 'methodist' %}bg-blue-lt{% else %}bg-red-lt{% endif %}">{{ details.get_role_display }}</span>
+  </div>
+  <div class="card-body"><dl class="profile-details">
+    <div><dt>Учебная группа</dt><dd>{{ details.academic_group|default:'Не назначена' }}</dd></div>
+    <div><dt>Факультет</dt><dd>{{ details.academic_group.department.title|default:'Не назначен' }}</dd></div>
+    <div><dt>Электронная почта</dt><dd>{{ user.email|default:'Не указана' }}</dd></div>
+    <div><dt>Доступ</dt><dd>{% if can_manage %}Просмотр и редактирование учебных данных{% else %}Просмотр учебных данных{% endif %}</dd></div>
+  </dl></div>
+  <div class="card-footer profile-actions"><a class="btn btn-primary" href="{% url 'entity_list' 'courses' %}"><i data-lucide="book-open"></i> Курсы</a><a class="btn" href="{% url 'dashboard' %}"><i data-lucide="chart-no-axes-combined"></i> Аналитика</a></div>
+</div>
+{% endblock %}

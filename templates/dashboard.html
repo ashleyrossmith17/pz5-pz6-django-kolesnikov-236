@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Аналитика · Учебный портал{% endblock %}
+{% block content %}
+<div class="page-header mb-4 dashboard-header"><div><div class="page-pretitle">Обзор системы</div><h1 class="page-title">Аналитика учебного портала</h1></div>
+<form method="get" class="dashboard-filter"><label class="form-label m-0" for="departmentSelect">Факультет</label>
+<select name="department" id="departmentSelect" class="form-select" onchange="this.form.submit()"><option value="">Все факультеты</option>{% for department in departments %}<option value="{{ department.pk }}" {% if selected_department == department.pk|stringformat:'s' %}selected{% endif %}>{{ department.code }} · {{ department.title }}</option>{% endfor %}</select>
+{% if selected_department %}<a class="btn btn-icon" href="{% url 'dashboard' %}" title="Сбросить фильтр" aria-label="Сбросить фильтр"><i data-lucide="x"></i></a>{% endif %}<noscript><button class="btn">Применить</button></noscript></form></div>
+<div class="row row-cards mb-4">
+{% include 'dashboard/components/stat_card.html' with title='Курсы' value=total_courses color='teal' icon='book-open' %}
+{% include 'dashboard/components/stat_card.html' with title='Учебные группы' value=total_groups color='blue' icon='users-round' %}
+{% include 'dashboard/components/stat_card.html' with title='Факультеты' value=total_departments color='yellow' icon='building-2' %}
+{% include 'dashboard/components/stat_card.html' with title='Пользователи' value=total_users color='red' icon='user-round' %}
+</div>
+<div class="row row-cards">
+<div class="col-lg-4">{% include 'dashboard/components/chart_card.html' with title='Курсы по факультетам' chart_id='coursesChart' %}</div>
+<div class="col-lg-4">{% include 'dashboard/components/chart_card.html' with title='Группы по факультетам' chart_id='groupsChart' %}</div>
+<div class="col-lg-4">{% include 'dashboard/components/chart_card.html' with title='Роли пользователей' chart_id='usersChart' %}</div>
+</div>
+{{ chart_data|json_script:'dashboard-data' }}
+<table class="visually-hidden"><caption>Данные диаграмм</caption>{% for key, chart in chart_data.items %}<tr><th>{{ key }}</th><td>{{ chart.labels|join:', ' }}</td><td>{{ chart.values|join:', ' }}</td></tr>{% endfor %}</table>
+{% endblock %}
+{% block scripts %}<script src="{% static 'vendor/chart.umd.min.js' %}"></script><script src="{% static 'dashboard.js' %}"></script>{% endblock %}

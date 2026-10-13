@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}{{ page_title }} · Учебный портал{% endblock %}
+{% block content %}
+<div class="page-header mb-4 list-header"><div><div class="page-pretitle">Учебные данные</div><h1 class="page-title">{{ page_title }}</h1></div>
+{% if can_manage %}<a class="btn btn-primary" href="{% url 'object_add' kind %}"><i data-lucide="plus"></i> Добавить</a>{% endif %}</div>
+<div class="card"><div class="card-header"><h2 class="card-title">{{ page_title }}</h2><span class="badge bg-secondary-lt ms-auto">{{ objects|length }}</span></div>
+<div class="table-responsive"><table class="table table-vcenter card-table"><thead><tr>{% block columns %}{% endblock %}{% if can_manage %}<th class="text-end">Действия</th>{% endif %}</tr></thead><tbody>
+{% for object in objects %}<tr>{% block cells %}{% endblock %}{% if can_manage %}<td class="text-end actions-cell">
+<a class="btn btn-icon bg-teal-lt" href="{% url 'object_edit' kind object.pk %}" title="Изменить" aria-label="Изменить {{ object }}"><i data-lucide="pencil"></i></a>
+<a class="btn btn-icon bg-red-lt" href="{% url 'object_delete' kind object.pk %}" title="Удалить" aria-label="Удалить {{ object }}"><i data-lucide="trash-2"></i></a>
+</td>{% endif %}</tr>{% empty %}<tr><td colspan="6" class="text-center text-secondary py-4">Записей пока нет</td></tr>{% endfor %}
+</tbody></table></div></div>
+{% endblock %}

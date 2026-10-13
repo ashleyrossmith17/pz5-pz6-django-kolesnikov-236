@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block title %}Удаление записи · Учебный портал{% endblock %}
+{% block content %}
+<div class="page-header mb-4"><div class="page-pretitle">{{ section_title }}</div><h1 class="page-title">Удаление записи</h1></div>
+<form method="post" class="card edit-form">{% csrf_token %}<div class="card-body"><p>Удалить запись «{{ object }}»?</p></div>
+<div class="card-footer form-actions"><a class="btn" href="{% url 'entity_list' kind %}">Отмена</a><button class="btn btn-danger" type="submit"><i data-lucide="trash-2"></i> Удалить</button></div></form>
+{% endblock %}
